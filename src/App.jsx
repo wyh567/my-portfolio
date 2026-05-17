@@ -1,217 +1,463 @@
-export default function App() {
-  const pageStyle = {
-    minHeight: "100vh",
-    background: "#0f1115",
-    color: "#f5f7fa",
-    fontFamily: "Arial, sans-serif",
+import { useEffect, useRef, useState } from "react";
+import "./App.css";
+
+const EMAIL = "2457846992@qq.com";
+
+const projects = [
+  {
+    id: 1,
+    no: "01",
+    title: "品牌视觉系统重构",
+    category: "Brand Identity",
+    year: "2025",
+    keyword: "IDENTITY",
+    desc: "以视觉传达方法建立品牌识别系统，覆盖标志、字体、色彩、版式与应用延展。",
+    detail:
+      "该项目关注品牌在不同媒介中的一致性表达，通过核心视觉符号、网格系统和字体层级，让品牌拥有可识别、可延展、可传播的视觉语言。",
+  },
+  {
+    id: 2,
+    no: "02",
+    title: "实验性字体海报",
+    category: "Typography",
+    year: "2025",
+    keyword: "TYPE",
+    desc: "通过字形解构、重组与图形秩序，探索中文字体在视觉传达中的表现张力。",
+    detail:
+      "该系列以中文笔画结构为基础，结合实验排版、负空间和节奏控制，形成具有视觉冲击力和概念表达力的海报系统。",
+  },
+  {
+    id: 3,
+    no: "03",
+    title: "数字界面视觉体验",
+    category: "UI Vision",
+    year: "2024",
+    keyword: "INTERFACE",
+    desc: "面向数字产品界面，建立高对比、强层级、低干扰的视觉体验系统。",
+    detail:
+      "项目重点在于信息秩序与界面情绪，通过暗色系统、微交互反馈和视觉焦点管理，提升用户对内容的理解效率。",
+  },
+  {
+    id: 4,
+    no: "04",
+    title: "动态视觉叙事实验",
+    category: "Motion Graphic",
+    year: "2024",
+    keyword: "MOTION",
+    desc: "将静态图形语言转化为动态节奏，建立更具记忆点的视觉叙事。",
+    detail:
+      "通过节奏、速度、图形转场和视觉残影，探索视觉传达从平面到动态媒介的扩展方式。",
+  },
+];
+
+const skills = [
+  "Photoshop",
+  "Illustrator",
+  "After Effects",
+  "品牌识别",
+  "字体设计",
+  "版式设计",
+  "海报设计",
+  "视觉叙事",
+  "UI 视觉",
+  "动态图形",
+  "信息层级",
+  "视觉系统",
+];
+
+const timeline = [
+  {
+    year: "2025",
+    title: "个人作品集系统搭建",
+    text: "围绕视觉传达设计方向，建立个人品牌、项目展示和视觉表达体系。",
+  },
+  {
+    year: "2024",
+    title: "视觉传达课程项目深化",
+    text: "持续进行品牌、字体、海报、界面与动态视觉相关实验。",
+  },
+  {
+    year: "2023",
+    title: "设计方法与软件能力积累",
+    text: "系统学习 Photoshop、Illustrator、After Effects 与版式基础。",
+  },
+];
+
+function MagneticButton({ children, href, onClick, variant = "primary" }) {
+  const ref = useRef(null);
+
+  const move = (event) => {
+    const el = ref.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    const x = event.clientX - rect.left - rect.width / 2;
+    const y = event.clientY - rect.top - rect.height / 2;
+
+    el.style.setProperty("--btn-x", `${x * 0.18}px`);
+    el.style.setProperty("--btn-y", `${y * 0.18}px`);
   };
 
-  const containerStyle = {
-    width: "90%",
-    maxWidth: "1100px",
-    margin: "0 auto",
+  const leave = () => {
+    const el = ref.current;
+    if (!el) return;
+
+    el.style.setProperty("--btn-x", "0px");
+    el.style.setProperty("--btn-y", "0px");
   };
 
-  const heroStyle = {
-    padding: "80px 0 60px",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-  };
-
-  const titleStyle = {
-    fontSize: "56px",
-    fontWeight: "700",
-    lineHeight: "1.1",
-    marginBottom: "20px",
-  };
-
-  const subTitleStyle = {
-    fontSize: "20px",
-    color: "rgba(255,255,255,0.7)",
-    lineHeight: "1.8",
-    maxWidth: "720px",
-  };
-
-  const buttonWrapStyle = {
-    marginTop: "30px",
-    display: "flex",
-    gap: "16px",
-    flexWrap: "wrap",
-  };
-
-  const primaryBtn = {
-    background: "#ffffff",
-    color: "#111111",
-    padding: "14px 22px",
-    borderRadius: "14px",
-    textDecoration: "none",
-    fontWeight: "600",
-    display: "inline-block",
-  };
-
-  const secondaryBtn = {
-    border: "1px solid rgba(255,255,255,0.18)",
-    color: "#ffffff",
-    padding: "14px 22px",
-    borderRadius: "14px",
-    textDecoration: "none",
-    fontWeight: "600",
-    display: "inline-block",
-  };
-
-  const sectionStyle = {
-    padding: "60px 0",
-  };
-
-  const sectionTitle = {
-    fontSize: "32px",
-    marginBottom: "24px",
-  };
-
-  const gridStyle = {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-    gap: "20px",
-  };
-
-  const cardStyle = {
-    background: "#171a21",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: "20px",
-    padding: "22px",
-  };
-
-  const coverStyle = {
-    height: "220px",
-    borderRadius: "16px",
-    background: "linear-gradient(135deg, #2b2f3a, #14161c)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "rgba(255,255,255,0.45)",
-    fontSize: "14px",
-    marginBottom: "18px",
-  };
-
-  const tagWrap = {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "8px",
-    marginTop: "14px",
-  };
-
-  const tagStyle = {
-    fontSize: "12px",
-    color: "rgba(255,255,255,0.75)",
-    border: "1px solid rgba(255,255,255,0.12)",
-    borderRadius: "999px",
-    padding: "6px 10px",
-  };
-
-  const textMuted = {
-    color: "rgba(255,255,255,0.68)",
-    lineHeight: "1.8",
-  };
-
-  const footerStyle = {
-    padding: "40px 0 80px",
-    color: "rgba(255,255,255,0.55)",
-    fontSize: "14px",
-  };
-
-  const projects = [
-    {
-      title: "小王子宇宙儿童绘本",
-      type: "绘本设计 / AI辅助创作",
-      desc: "以《小王子》为灵感，做儿童向宇宙科普绘本，展示故事叙事、角色设定与页面节奏。",
-      tags: ["绘本", "视觉叙事", "AI绘图"],
-    },
-    {
-      title: "品牌视觉重构",
-      type: "品牌设计 / 视觉系统",
-      desc: "围绕年轻化品牌定位，重做标志、色彩、海报和社交媒体视觉，提升统一性与识别度。",
-      tags: ["品牌", "版式", "视觉系统"],
-    },
-    {
-      title: "未来感海报实验",
-      type: "海报设计 / 概念视觉",
-      desc: "结合排版、3D和高对比视觉语言，做一组未来感概念海报，强调速度与秩序感。",
-      tags: ["海报", "C4D", "实验视觉"],
-    },
-  ];
+  const Tag = href ? "a" : "button";
 
   return (
-    <div style={pageStyle}>
-      <section style={heroStyle}>
-        <div style={containerStyle}>
-          <p style={{ color: "rgba(255,255,255,0.45)", letterSpacing: "2px", marginBottom: "16px" }}>
-            PORTFOLIO / VISUAL COMMUNICATION
-          </p>
-          <h1 style={titleStyle}>
-            王奕豪
-            <br />
-            视觉传达设计作品集
-          </h1>
-          <p style={subTitleStyle}>
-            我关注品牌、叙事和数字视觉的结合，尝试把 AI、设计和个人表达放进同一套创作语言里。
-          </p>
+    <Tag
+      ref={ref}
+      href={href}
+      onClick={onClick}
+      onMouseMove={move}
+      onMouseLeave={leave}
+      className={`magnetic-btn ${variant === "ghost" ? "ghost" : "primary"}`}
+      type={href ? undefined : "button"}
+    >
+      <span>{children}</span>
+      <i>↗</i>
+    </Tag>
+  );
+}
 
-          <div style={buttonWrapStyle}>
-            <a href="#projects" style={primaryBtn}>查看作品</a>
-            <a href="#about" style={secondaryBtn}>关于我</a>
+function Navbar() {
+  return (
+    <header className="nav">
+      <a href="#home" className="nav-logo" aria-label="返回首页">
+        <strong>WYH</strong>
+        <span>Visual Communication</span>
+      </a>
+
+      <nav className="nav-menu" aria-label="主导航">
+        <a href="#about">关于</a>
+        <a href="#projects">作品</a>
+        <a href="#timeline">经历</a>
+        <a href="#contact">联系</a>
+      </nav>
+    </header>
+  );
+}
+
+function Hero() {
+  const titleRef = useRef(null);
+
+  const moveTitleLight = (event) => {
+    const box = titleRef.current;
+    if (!box) return;
+
+    const rect = box.getBoundingClientRect();
+    box.style.setProperty("--title-x", `${event.clientX - rect.left}px`);
+    box.style.setProperty("--title-y", `${event.clientY - rect.top}px`);
+  };
+
+  return (
+    <section id="home" className="hero" onMouseMove={moveTitleLight}>
+      <div className="hero-badge">
+        <span />
+        Visual Communication Portfolio
+      </div>
+
+      <div className="hero-title-wrap" ref={titleRef}>
+        <h1 className="hero-title hero-title-base">
+          王奕豪
+          <br />
+          视觉不是装饰
+          <br />
+          是秩序与感知的设计
+        </h1>
+
+        <h1 className="hero-title hero-title-reveal" aria-hidden="true">
+          王奕豪
+          <br />
+          视觉不是装饰
+          <br />
+          是秩序与感知的设计
+        </h1>
+      </div>
+
+      <p className="hero-text">
+        我是一名视觉传达设计师，关注品牌识别、字体版式、数字界面与视觉叙事。
+        我希望用克制、精准、有记忆点的视觉语言，构建具有专业气质的作品体验。
+      </p>
+
+      <div className="hero-actions">
+        <MagneticButton href="#projects">查看精选作品</MagneticButton>
+        <MagneticButton href="#contact" variant="ghost">
+          联系我
+        </MagneticButton>
+      </div>
+
+      <div className="hero-meta">
+        <div>
+          <span>01</span>
+          <strong>Brand Identity</strong>
+        </div>
+        <div>
+          <span>02</span>
+          <strong>Typography</strong>
+        </div>
+        <div>
+          <span>03</span>
+          <strong>Poster Design</strong>
+        </div>
+        <div>
+          <span>04</span>
+          <strong>Motion Vision</strong>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SectionTitle({ eyebrow, title, text }) {
+  return (
+    <div className="section-title">
+      <span>{eyebrow}</span>
+      <h2>{title}</h2>
+      {text && <p>{text}</p>}
+    </div>
+  );
+}
+
+function About() {
+  return (
+    <section id="about" className="about section">
+      <SectionTitle
+        eyebrow="About Me"
+        title="我关注的不只是画面，而是画面如何建立秩序、情绪和记忆。"
+        text="视觉传达对我来说不是装饰，而是把复杂信息重新组织，让它变得清晰、有气质、可被记住。"
+      />
+
+      <div className="about-grid">
+        <article className="about-card large">
+          <p>Designer</p>
+          <h3>王奕豪</h3>
+          <span>Visual Communication Designer</span>
+        </article>
+
+        <article className="about-card">
+          <p>Direction</p>
+          <h3>品牌 / 字体 / 版式</h3>
+        </article>
+
+        <article className="about-card">
+          <p>Software</p>
+          <h3>PS / AI / AE</h3>
+        </article>
+
+        <article className="about-card">
+          <p>Attitude</p>
+          <h3>克制、精准、有张力</h3>
+        </article>
+      </div>
+
+      <div className="skill-cloud" aria-label="核心技能">
+        {skills.map((skill) => (
+          <span key={skill}>{skill}</span>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Projects() {
+  const [activeProject, setActiveProject] = useState(null);
+
+  useEffect(() => {
+    const close = (event) => {
+      if (event.key === "Escape") setActiveProject(null);
+    };
+
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, []);
+
+  return (
+    <section id="projects" className="projects section">
+      <SectionTitle
+        eyebrow="Selected Projects"
+        title="精选作品"
+        text="以作品墙的形式呈现视觉系统、字体实验、数字界面和动态叙事方向。"
+      />
+
+      <div className="project-grid">
+        {projects.map((project) => (
+          <button
+            className="project-card"
+            key={project.id}
+            type="button"
+            onClick={() => setActiveProject(project)}
+          >
+            <div className="project-visual">
+              <span>{project.no}</span>
+              <strong>{project.keyword}</strong>
+              <i>{project.year}</i>
+            </div>
+
+            <div className="project-info">
+              <p>{project.category}</p>
+              <h3>{project.title}</h3>
+              <small>{project.desc}</small>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {activeProject && (
+        <div className="modal-backdrop" onClick={() => setActiveProject(null)}>
+          <article
+            className="project-modal"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={activeProject.title}
+          >
+            <button
+              className="modal-close"
+              type="button"
+              onClick={() => setActiveProject(null)}
+              aria-label="关闭弹窗"
+            >
+              ×
+            </button>
+
+            <div className="modal-visual">
+              <span>{activeProject.no}</span>
+              <strong>{activeProject.keyword}</strong>
+            </div>
+
+            <div className="modal-content">
+              <p>
+                {activeProject.category} · {activeProject.year}
+              </p>
+              <h3>{activeProject.title}</h3>
+              <span>{activeProject.detail}</span>
+            </div>
+          </article>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function Timeline() {
+  return (
+    <section id="timeline" className="timeline section">
+      <SectionTitle
+        eyebrow="Experience"
+        title="设计经历"
+        text="从软件能力、视觉方法到完整作品集系统，逐步建立个人设计语言。"
+      />
+
+      <div className="timeline-list">
+        {timeline.map((item, index) => (
+          <article className="timeline-item" key={item.year}>
+            <div className="timeline-point">
+              <span>{index + 1}</span>
+            </div>
+
+            <div>
+              <p>{item.year}</p>
+              <h3>{item.title}</h3>
+              <small>{item.text}</small>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Contact() {
+  const [sent, setSent] = useState(false);
+
+  const submit = (event) => {
+    event.preventDefault();
+    setSent(true);
+    window.setTimeout(() => setSent(false), 1800);
+  };
+
+  return (
+    <section id="contact" className="contact section">
+      <SectionTitle
+        eyebrow="Contact"
+        title="让视觉作品拥有真正的高级感。"
+        text="如果你想查看我的完整作品集，或进行设计交流，可以通过邮箱联系我。"
+      />
+
+      <div className="contact-layout">
+        <form className="contact-form" onSubmit={submit}>
+          <label>
+            <span>你的名字</span>
+            <input type="text" placeholder="Name" />
+          </label>
+
+          <label>
+            <span>联系方式</span>
+            <input type="email" placeholder="Email" />
+          </label>
+
+          <label>
+            <span>留言内容</span>
+            <textarea placeholder="Message" rows="5" />
+          </label>
+
+          <button type="submit">
+            {sent ? "已记录你的想法" : "发送信息"}
+            <span>↗</span>
+          </button>
+        </form>
+
+        <aside className="contact-card">
+          <p>Email</p>
+          <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+
+          <div>
+            <span>Available for</span>
+            <strong>作品集交流 / 视觉设计合作 / 品牌视觉项目</strong>
           </div>
-        </div>
-      </section>
 
-      <section id="projects" style={sectionStyle}>
-        <div style={containerStyle}>
-          <h2 style={sectionTitle}>精选作品</h2>
-          <div style={gridStyle}>
-            {projects.map((item, index) => (
-              <div key={index} style={cardStyle}>
-                <div style={coverStyle}>项目封面图展示区域</div>
-                <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "13px", marginBottom: "10px" }}>
-                  {item.type}
-                </p>
-                <h3 style={{ fontSize: "24px", marginBottom: "12px" }}>{item.title}</h3>
-                <p style={textMuted}>{item.desc}</p>
-                <div style={tagWrap}>
-                  {item.tags.map((tag, i) => (
-                    <span key={i} style={tagStyle}>{tag}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+          <ul>
+            <li>Behance</li>
+            <li>Instagram</li>
+            <li>Dribbble</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+  );
+}
 
-      <section id="about" style={sectionStyle}>
-        <div style={containerStyle}>
-          <h2 style={sectionTitle}>关于我</h2>
-          <div style={cardStyle}>
-            <p style={textMuted}>
-              我是视觉传达设计大三学生，关注品牌设计、海报设计、AI辅助创作和C4D视觉表达。
-              我喜欢把文字、图像、排版和技术放在一起，做成既有情绪又有结构的作品。
-            </p>
-          </div>
-        </div>
-      </section>
+export default function App() {
+  useEffect(() => {
+    const move = (event) => {
+      document.documentElement.style.setProperty("--mx", `${event.clientX}px`);
+      document.documentElement.style.setProperty("--my", `${event.clientY}px`);
+    };
 
-      <section style={sectionStyle}>
-        <div style={containerStyle}>
-          <h2 style={sectionTitle}>联系我</h2>
-          <div style={cardStyle}>
-            <p style={textMuted}>邮箱：2457846992@qq.com</p>
-            <p style={textMuted}>Behance：你的作品链接</p>
-          </div>
-        </div>
-      </section>
+    window.addEventListener("pointermove", move);
+    return () => window.removeEventListener("pointermove", move);
+  }, []);
 
-      <footer style={footerStyle}>
-        <div style={containerStyle}>
-          © 2026 王奕豪 Portfolio
-        </div>
-      </footer>
+  return (
+    <div className="portfolio">
+      <div className="site-bg" />
+      <div className="noise" />
+      <div className="cursor-light" />
+
+      <Navbar />
+
+      <main>
+        <Hero />
+        <About />
+        <Projects />
+        <Timeline />
+        <Contact />
+      </main>
     </div>
   );
 }
